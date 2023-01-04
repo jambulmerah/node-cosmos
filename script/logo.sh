@@ -1,4 +1,4 @@
-clear
+#!/bin/bash
 echo -e "\e[96m"
 echo -e '     $$$$\                           $$\                 $$\ '
 echo -e '      \$$ |                          $$ |                $$ |'
