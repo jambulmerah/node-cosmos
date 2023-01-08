@@ -181,7 +181,7 @@ while true; do
                only_num=true
                for i in ${!custom_strategy[@]}; do
                    read -p "$(echo -e ""${input_prompt}"(${custom_strategy[$i]})─>> ")" ${custom_strategy[$i]}
-                   if [[ -n ${!custom_strategy[$i]} && ${!custom_strategy[$i]} =~ ^[1-9]*$ ]]; then
+                   if [[ -n ${!custom_strategy[$i]} && ${!custom_strategy[$i]} =~ ^[0-9]*$ ]]; then
                        continue
                    else
                        clear
@@ -190,7 +190,7 @@ while true; do
                        break
                    fi
                done
-               if [[ $only_num == "true" && $pruning_interval -eq ^[1-9]{1}$ ]]; then
+               if [[ $only_num == "true" && $pruning_interval -ge 10 ]]; then
                    break
                else
                    echo "Pruning interval must not be less than 10..."
