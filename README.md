@@ -4,6 +4,6 @@
 ## [Mises Metwork](https://restake.app/mises/misesvaloper15wl2vvwxaupdhw6xjxztmudnttlj0vpjr02g5z)
 
 ## Services
-### Tendermint snapshot
-https://cosmos.jambulmerah.dev/snapshot
+### [Tendermint snapshots](https://cosmos.jambulmerah.dev/snapshots)
+### [Tendermint addrbook](https://cosmos.jambulmerah.dev/addrbook)
 
