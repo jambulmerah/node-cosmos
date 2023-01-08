@@ -29,8 +29,8 @@ rpc_peer[1]="67224ac7f52eac4db6bb0a8de0bf8fbc5e7e0069@199.204.45.23:10656"
 genesis[1]="https://raw.githubusercontent.com/ingenuity-build/testnets/main/innuendo/genesis.json"
 addrbook[1]=""
 seeds[1]=""
-peers[1]="$(curl -s --connect-timeout 0.1 ${rpc[1]}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -s -d,)"
-snapshot[1]="$(curl -s --connect-timeout 0.1 https://polkachu.com/testnets/quicksilver/snapshots | grep -o ">quicksilver.*\.tar.lz4" | tr -d ">" | head -1)"
+peers[1]="$(curl -s --connect-timeout 0.25 ${rpc[1]}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -s -d,)"
+snapshot[1]="$(curl -s --connect-timeout 0.25 https://polkachu.com/testnets/quicksilver/snapshots | grep -o ">quicksilver.*\.tar.lz4" | tr -d ">" | head -1)"
 snapshot_url[1]="https://snapshots.polkachu.com/testnet-snapshots/quicksilver/${snapshot[1]}"
 snapshot_provider[1]="polkachu.com"
 key_backend[1]=test
@@ -45,8 +45,8 @@ rpc_peer[2]="18b9d4b4cd492715c41042e23907ab3ce292bc4b@38.108.68.113:26656"
 genesis[2]="https://github.com/ingenuity-build/mainnet/raw/main/genesis.json"
 addrbook[2]=
 seeds[2]=
-peers[2]="$(curl -s --connect-timeout 0.1 ${rpc[2]}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -s -d,)"
-snapshot[2]="$(curl -s --connect-timeout 0.1 https://snapshots.polkachu.com/snapshots | xmlstarlet fo | grep -o ">quicksilver.*\.tar.lz4" | tr -d ">")"
+peers[2]="$(curl -s --connect-timeout 0.25 ${rpc[2]}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -s -d,)"
+snapshot[2]="$(curl -s --connect-timeout 0.25 https://snapshots.polkachu.com/snapshots | xmlstarlet fo | grep -o ">quicksilver.*\.tar.lz4" | tr -d ">")"
 snapshot_url[2]="https://snapshots.polkachu.com/snapshots/${snapshot[2]}"
 snapshot_provider[2]="polkachu.com"
 key_backend[2]=os
@@ -302,7 +302,7 @@ done
 
 snapshotSync(){
 clear
-if [[ -n ${snapshot[$x]} && $(curl -sI --connect-timeout 0.1 ${snapshot_url[$x]} 2>/dev/null) ]]; then
+if [[ -n ${snapshot[$x]} && $(curl -sI --connect-timeout 0.25 ${snapshot_url[$x]} 2>/dev/null) ]]; then
     sudo systemctl stop ${bin_name}.service
     $bin_name tendermint unsafe-reset-all --keep-addr-book --home $chain_dir >/dev/null 2>&1
     echo "Downloading and decompressing snapshot..." && tput civis
@@ -321,10 +321,10 @@ fi
 stateSync(){
 clear
 echo "Fething state sync"
-if [[ -n ${rpc[$x]} && $(curl -s --connect-timeout 0.1 ${rpc[$x]} 2>/dev/null) ]]; then
-    LATEST_HEIGHT=$(curl -s --connect-timeout 0.1 ${rpc[$x]}/block | jq -r .result.block.header.height); \
+if [[ -n ${rpc[$x]} && $(curl -s --connect-timeout 0.25 ${rpc[$x]} 2>/dev/null) ]]; then
+    LATEST_HEIGHT=$(curl -s --connect-timeout 0.25 ${rpc[$x]}/block | jq -r .result.block.header.height); \
     BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
-    TRUST_HASH=$(curl -s --connect-timeout 0.1 "${rpc[$x]}/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+    TRUST_HASH=$(curl -s --connect-timeout 0.25 "${rpc[$x]}/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
     echo -e "Fetched statesync :\nLatest height : $LATEST_HEIGHT \nBlock height  : $BLOCK_HEIGHT \nTrust Hash    : $TRUST_HASH \nRPC          : ${rpc[$x]}" && sleep 1.5
     sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
     s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"${rpc[$x]},${rpc[$x]}\"| ; \
@@ -484,7 +484,7 @@ while true; do
     echo -e " \e[1;7m${version}\e[0;96m"
     . <(curl -s $logo_url)
     getNodeInfo
-    if [[ $(curl -s --connect-timeout 0.1 ${rpc[$c]}) ]]; then
+    if [[ $(curl -s --connect-timeout 0.25 ${rpc[$c]}) ]]; then
         last_block=$(curl -s ${rpc[$c]}/status | jq -r '.result.sync_info.latest_block_height')
         echo -e "\e[1;7m${project_name} ${chain_id[$c]} State sync info \e[0;96m "
         echo "Height   : $last_block"
@@ -576,8 +576,8 @@ clear
         echo -e "\e[1;7m${project_name} ${chain[$i]} info \e[0;96m "
         echo "Network type     : ${chain[$i]}"
         echo "Chain ID         : ${chain_id[$i]}"
-        echo "Binary version   : $(curl -s --connect-timeout 0.1 ${rpc[$i]}/abci_info | jq -r .result.response.version)"
-        echo "Block height     : $(curl -s --connect-timeout 0.1 ${rpc[$i]}/status | jq -r .result.sync_info.latest_block_height)"
+        echo "Binary version   : $(curl -s --connect-timeout 0.25 ${rpc[$i]}/abci_info | jq -r .result.response.version)"
+        echo "Block height     : $(curl -s --connect-timeout 0.25 ${rpc[$i]}/status | jq -r .result.sync_info.latest_block_height)"
         echo "Status           : $(echo ${chain_id[$i]} | grep ${chain_id[$i]} >/dev/null 2>&1 && echo -e ""$check_mark" Live" || echo -e "$x_mark" Not live)"
         echo $bline
     done

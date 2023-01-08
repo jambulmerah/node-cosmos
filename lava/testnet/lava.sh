@@ -28,7 +28,7 @@ rpc[1]="https://t-lava.rpc.utsa.tech:443"
 genesis[1]="https://raw.githubusercontent.com/K433QLtr6RA9ExEq/GHFkqmTzpdNLDd6T/main/testnet-1/genesis_json/genesis.json"
 addrbook[1]=""
 seeds[1]=""
-peers[1]="$(curl -s --connect-timeout 0.1 ${rpc[1]}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -s -d,)"
+peers[1]="$(curl -s --connect-timeout 0.25 ${rpc[1]}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -s -d,)"
 snapshot[1]=""
 snapshot_url[1]=""
 snapshot_provider[1]=""
@@ -44,7 +44,7 @@ rpc_peer[2]=""
 genesis[2]=""
 addrbook[2]=
 seeds[2]=
-peers[2]="$(curl -s --connect-timeout 0.1 ${rpc[2]}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -s -d,)"
+peers[2]="$(curl -s --connect-timeout 0.25 ${rpc[2]}/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -s -d,)"
 snapshot[2]=""
 snapshot_url[2]=""
 snapshot_provider[2]=""
@@ -301,7 +301,7 @@ done
 
 snapshotSync(){
 clear
-if [[ -n ${snapshot[$x]} && $(curl -sI --connect-timeout 0.1 ${snapshot_url[$x]} 2>/dev/null) ]]; then
+if [[ -n ${snapshot[$x]} && $(curl -sI --connect-timeout 0.25 ${snapshot_url[$x]} 2>/dev/null) ]]; then
     sudo systemctl stop ${bin_name}.service
     $bin_name tendermint unsafe-reset-all --keep-addr-book --home $chain_dir >/dev/null 2>&1
     echo "Downloading and decompressing snapshot..." && tput civis
@@ -320,10 +320,10 @@ fi
 stateSync(){
 clear
 echo "Fething state sync"
-if [[ -n ${rpc[$x]} && $(curl -s --connect-timeout 0.1 ${rpc[$x]} 2>/dev/null) ]]; then
-    LATEST_HEIGHT=$(curl -s --connect-timeout 0.1 ${rpc[$x]}/block | jq -r .result.block.header.height); \
+if [[ -n ${rpc[$x]} && $(curl -s --connect-timeout 0.25 ${rpc[$x]} 2>/dev/null) ]]; then
+    LATEST_HEIGHT=$(curl -s --connect-timeout 0.25 ${rpc[$x]}/block | jq -r .result.block.header.height); \
     BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
-    TRUST_HASH=$(curl -s --connect-timeout 0.1 "${rpc[$x]}/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+    TRUST_HASH=$(curl -s --connect-timeout 0.25 "${rpc[$x]}/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
     echo -e "Fetched statesync :\nLatest height : $LATEST_HEIGHT \nBlock height  : $BLOCK_HEIGHT \nTrust Hash    : $TRUST_HASH \nRPC          : ${rpc[$x]}" && sleep 1.5
     sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
     s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"${rpc[$x]},${rpc[$x]}\"| ; \
@@ -483,7 +483,7 @@ while true; do
     echo -e " \e[1;7m${version}\e[0;96m"
     . <(curl -s $logo_url)
     getNodeInfo
-    if [[ $(curl -s --connect-timeout 0.1 ${rpc[$c]}) ]]; then
+    if [[ $(curl -s --connect-timeout 0.25 ${rpc[$c]}) ]]; then
         last_block=$(curl -s ${rpc[$c]}/status | jq -r '.result.sync_info.latest_block_height')
         echo -e "\e[1;7m${project_name} ${chain_id[$c]} State sync info \e[0;96m "
         echo "Height   : $last_block"
@@ -575,8 +575,8 @@ clear
         echo -e "\e[1;7m${project_name} ${chain[$i]} info \e[0;96m "
         echo "Network type     : ${chain[$i]}"
         echo "Chain ID         : ${chain_id[$i]}"
-        echo "Binary version   : $(curl -s --connect-timeout 0.1 ${rpc[$i]}/abci_info | jq -r .result.response.version)"
-        echo "Block height     : $(curl -s --connect-timeout 0.1 ${rpc[$i]}/status | jq -r .result.sync_info.latest_block_height)"
+        echo "Binary version   : $(curl -s --connect-timeout 0.25 ${rpc[$i]}/abci_info | jq -r .result.response.version)"
+        echo "Block height     : $(curl -s --connect-timeout 0.25 ${rpc[$i]}/status | jq -r .result.sync_info.latest_block_height)"
         echo "Status           : $(echo ${chain_id[$i]} | grep ${chain_id[$i]} >/dev/null 2>&1 && echo -e ""$check_mark" Live" || echo -e "$x_mark" Not live)"
         echo $bline
     done
