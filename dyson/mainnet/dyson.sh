@@ -445,7 +445,7 @@ fi
 
 getNodeInfo(){
 for v in ${!chain_id[@]}; do
-    if [[ $($bin_name status 2>/dev/null | jq -r '.NodeInfo.network' 2>/dev/null) == ${chain_id[$v]} ]]; then
+    if [[ $(type $bin_name 2>/dev/null) && $($bin_name status 2>/dev/null | jq -r '.NodeInfo.network' 2>/dev/null) == ${chain_id[$v]} ]]; then
         net_id=$($bin_name status 2>/dev/null | jq -r '.NodeInfo.network' 2>/dev/null)
         syncing=$($bin_name status | jq -r '.SyncInfo.catching_up')
         node_name=$($bin_name status | jq -r '.NodeInfo.moniker')
