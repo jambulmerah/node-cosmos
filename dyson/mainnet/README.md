@@ -1,5 +1,5 @@
 ##
 ```
-bash -c "$(curl -s https://github.com/jambulmerah/node-cosmos/blob/master/dyson/mainnet/dyson.sh)"
+bash -c "$(curl -s https://raw.githubusercontent.com/jambulmerah/node-cosmos/master/dyson/mainnet/dyson.sh)"
 
 ```
