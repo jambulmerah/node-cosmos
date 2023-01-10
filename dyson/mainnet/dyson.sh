@@ -451,10 +451,10 @@ for v in ${!chain_id[@]}; do
         node_name=$($bin_name status | jq -r '.NodeInfo.moniker')
         val_key=$($bin_name tendermint show-validator)
         miss_block=$($bin_name q slashing signing-info ${val_key} -oj 2>/dev/null | jq -r '.missed_blocks_counter' 2>/dev/null)
+        val_info=$($bin_name q staking validators -oj --limit 5000 | jq '.validators[] | select(.consensus_pubkey=='${val_key}')')
         echo -e "\e[1;7mYou have a running ${project_name} ${chain[$v]} (${chain_id[$v]}) node\e[0;96m "
         echo "Node syncing      : $syncing"
-        if [[ -n ${miss_block} ]]; then
-            val_info=$($bin_name q staking validators -oj --limit 5000 | jq '.validators[] | select(.consensus_pubkey=='${val_key}')')
+        if [[ -n ${val_info} ]]; then
             val_moniker=$(echo $val_info | jq -r '.description.moniker')
             val_status=$(echo $val_info | jq -r '.status')
             val_jailed=$(echo $val_info | jq -r '.jailed')
@@ -477,6 +477,7 @@ done
 }
 
 menuOption(){
+
 while true; do
     clear
     echo -e " \e[1;7m${version}\e[0;96m"
