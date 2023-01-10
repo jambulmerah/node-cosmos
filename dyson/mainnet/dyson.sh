@@ -349,8 +349,8 @@ echo "[2] Sync "$project_name" "${chain_id[$x]}" with statesync"
 echo "[3] Sync "$project_name" "${chain_id[$x]}" blocks from scratch without snapshot and statesync"
 read -p "$(printf "${input_prompt}(SyncMethod)─>> ")" sync
 case $sync in
-    1) [ -n ${snapshot[$x]} ] && snapshotSync; break;;
-    2) [ -n ${rpc[$x]} ] && stateSync; break;;
+    1) [ -n ${snapshot[$x]} ] && snapshotSync;;
+    2) [ -n ${rpc[$x]} ] && stateSync;;
     3) sudo systemctl restart $bin_name; printFinish; break;;
 esac
 
@@ -421,7 +421,7 @@ while true; do
     read -p "$(printf "${input_prompt}(Systemd-service)─>> ")" service
     case $service in
         1) installCosmovisor; cosmovisorService; break;;
-        2) systemdService; break;;
+        2) defaultService; break;;
     esac
 done
 }
