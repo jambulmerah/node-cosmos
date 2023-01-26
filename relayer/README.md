@@ -24,7 +24,7 @@ hermes version
 RELAYED_BY='Relayed by discordusername#0000'
 ```
 
-### Config hermes
+### Sample config hermes
 ```
 cat <<EOF > ~/.hermes/config.toml
 [global]
@@ -381,10 +381,11 @@ journalctl -ocat -fu hermesd
 
 #### Test relay ibc transfer
 ```
-hermesd tx ft-transfer \
+hermes tx ft-transfer \
 --src-chain osmosis-1 \
 --dst-chain planq_7070-2 \
 --src-port transfer \
+--src-channel channel-492 \
 --key-name relayer \
 --receiver <planq_address> \
 --amount 1 \
