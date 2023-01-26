@@ -318,7 +318,7 @@ EOF
 
 #### Check hermes health
 ```
-hermes hwalth-check
+hermes health-check
 ```
 
 #### Import wallet
