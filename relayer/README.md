@@ -30,60 +30,60 @@ cat <<EOF > ~/.hermes/config.toml
 [global]
 log_level = 'debug'
 [mode.clients]
-enabled = true
+enabled= true
 refresh = true
-misbehaviour = false
+misbehaviour= true
 
 [mode.connections]
-enabled = true
+enabled= true
 
 [mode.channels]
-enabled = true
+enabled= true
 
 [mode.packets]
 enabled = true
-clear_interval = 100
+clear_interval = 200
 clear_on_start = true
 tx_confirmation = true
 auto_register_counterparty_payee = true
 
 [rest]
 enabled = true
-host = '127.0.0.1'
+host = '127.0.0.0'
 port = 3000
 
 [telemetry]
 enabled = true
-host = '127.0.0.1'
+host = '127.0.0.0'
 port = 3001
-
 [[chains]]
 id = 'cosmoshub-4'
 type = 'CosmosSdk'
-rpc_addr = 'https://rpc.cosmoshub.strange.love/'
-websocket_addr = 'wss://rpc.cosmoshub.strange.love/websocket'
-grpc_addr = 'https://cosmoshub-grpc.lavenderfive.com/'
-rpc_timeout = '10s'
+rpc_addr = 'https://cosmoshub.rpc.interchain.ivaldilabs.xyz'
+websocket_addr = 'wss://cosmoshub.rpc.interchain.ivaldilabs.xyz/websocket'
+grpc_addr = 'http://cosmos-grpc.polkachu.com:14990'
+rpc_timeout = '20s'
 account_prefix = 'cosmos'
 key_name = 'relayer'
 key_store_type = 'Test'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 40000000
-gas_multiplier = 1.1
+gas_multiplier = 2.0
 max_msg_num = 30
 max_tx_size = 180000
-clock_drift = '5s'
-max_block_time = '30s'
-memo_prefix = '$RELAYED_BY'
-sequential_batch_tx = true
+clock_drift = '15s'
+max_block_time = '10s'
+memo_prefix = 'Relayed by feriantogumulia#1421'
+sequential_batch_tx= true
+trusting_period = '7days'
 
 [chains.trust_threshold]
 numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 0.003
+price = 0.0025
 denom = 'uatom'
 
 [chains.packet_filter]
@@ -91,19 +91,7 @@ policy = 'allow'
 list = [
     [
     'transfer',
-    'channel-141', # Osmosis 
-],
-    [
-    'transfer',
-    'channel-446', # Planq
-],
-    [
-    'transfer',
-    'channel-391', # Stride
-],
-    [
-    'transfer',
-    'channel-281', # Gravity Bridge
+    'channel-446',
 ],
 ]
 
@@ -113,30 +101,31 @@ derivation = 'cosmos'
 [[chains]]
 id = 'gravity-bridge-3'
 type = 'CosmosSdk'
-rpc_addr = 'https://gravitybridge-rpc.lavenderfive.com/'
-websocket_addr = 'wss://rpc.gravity-bridge.nodestake.top/websocket'
-grpc_addr = 'https://gravitybridge-grpc.lavenderfive.com/'
-rpc_timeout = '10s'
+rpc_addr = 'https://rpc.gravity.bh.rocks'
+websocket_addr = 'wss://rpc.gravity.bh.rocks/websocket'
+grpc_addr = 'http://gravity-grpc.polkachu.com:14290'
+rpc_timeout = '20s'
 account_prefix = 'gravity'
 key_name = 'relayer'
 key_store_type = 'Test'
 store_prefix = 'ibc'
 default_gas = 100000
-max_gas = 2000000000
-gas_multiplier = 1.1
+max_gas = 120000000
+gas_multiplier = 2.0
 max_msg_num = 30
 max_tx_size = 180000
-clock_drift = '5s'
-max_block_time = '30s'
-memo_prefix = '$RELAYED_BY'
-sequential_batch_tx = true
+clock_drift = '15s'
+max_block_time = '10s'
+memo_prefix = 'Relayed by feriantogumulia#1421'
+sequential_batch_tx= true
+trusting_period = '7days'
 
 [chains.trust_threshold]
 numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 0.003
+price = 0.0025
 denom = 'ugraviton'
 
 [chains.packet_filter]
@@ -144,15 +133,7 @@ policy = 'allow'
 list = [
     [
     'transfer',
-    'channel-10', # Osmosis
-],
-    [
-    'transfer',
-    'channel-102', # Planq
-],
-    [
-    'transfer',
-    'channel-17', # Cosmos
+    'channel-102',
 ],
 ]
 
@@ -162,30 +143,31 @@ derivation = 'cosmos'
 [[chains]]
 id = 'osmosis-1'
 type = 'CosmosSdk'
-rpc_addr = 'https://rpc-osmosis.ecostake.com/'
-websocket_addr = 'wss://rpc-osmosis.ecostake.com/websocket'
-grpc_addr = 'https://osmosis-grpc.lavenderfive.com/'
-rpc_timeout = '10s'
+rpc_addr = 'https://osmosis.rpc.interchain.ivaldilabs.xyz'
+websocket_addr = 'wss://osmosis.rpc.interchain.ivaldilabs.xyz/websocket'
+grpc_addr = 'http://osmosis-grpc.polkachu.com:12590'
+rpc_timeout = '20s'
 account_prefix = 'osmo'
 key_name = 'relayer'
 key_store_type = 'Test'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 120000000
-gas_multiplier = 1.1
+gas_multiplier = 2.0
 max_msg_num = 30
 max_tx_size = 180000
-clock_drift = '5s'
-max_block_time = '30s'
-memo_prefix = '$RELAYED_BY'
-sequential_batch_tx = true
+clock_drift = '15s'
+max_block_time = '10s'
+memo_prefix = 'Relayed by feriantogumulia#1421'
+sequential_batch_tx= true
+trusting_period = '7days'
 
 [chains.trust_threshold]
 numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 0.003
+price = 0.0025
 denom = 'uosmo'
 
 [chains.packet_filter]
@@ -193,19 +175,7 @@ policy = 'allow'
 list = [
     [
     'transfer',
-    'channel-0', # Cosmos
-],
-    [
-    'transfer',
-    'channel-144', # Gravity
-],
-    [
-    'transfer',
-    'channel-492', # Planq
-],
-    [
-    'transfer',
-    'channel-326', # Stride
+    'channel-492',
 ],
 ]
 
@@ -215,24 +185,25 @@ derivation = 'cosmos'
 [[chains]]
 id = 'planq_7070-2'
 type = 'CosmosSdk'
-rpc_addr = 'https://rpc.planq.nodestake.top/'
-websocket_addr = 'wss://rpc.planq.nodestake.top/websocket'
+rpc_addr = 'https://rpc.planq.network'
+websocket_addr = 'wss://rpc.planq.network/websocket'
 grpc_addr = 'https://grpc.planq.network/'
-rpc_timeout = '10s'
+rpc_timeout = '20s'
 account_prefix = 'plq'
 key_name = 'relayer'
 key_store_type = 'Test'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 40000000
-gas_multiplier = 1.1
+gas_multiplier = 2.0
 max_msg_num = 30
 max_tx_size = 180000
-clock_drift = '5s'
-max_block_time = '30s'
-memo_prefix = '$RELAYED_BY'
-sequential_batch_tx = true
+clock_drift = '15s'
+max_block_time = '10s'
+memo_prefix = 'Relayed by feriantogumulia#1421'
+sequential_batch_tx= true
 address_type =  { derivation = 'ethermint', proto_type = { pk_type = '/ethermint.crypto.v1.ethsecp256k1.PubKey' } }
+trusting_period = '7days'
 
 [chains.trust_threshold]
 numerator = '1'
@@ -247,19 +218,19 @@ policy = 'allow'
 list = [
     [
     'transfer',
-    'channel-2', # Cosmos
+    'channel-2',
 ],
     [
     'transfer',
-    'channel-0', # Gravity
+    'channel-0',
 ],
     [
     'transfer',
-    'channel-1', # Osmosis
+    'channel-1',
 ],
     [
     'transfer',
-    'channel-8', # Stride
+    'channel-8',
 ],
 ]
 
@@ -267,30 +238,30 @@ list = [
 [[chains]]
 id = 'stride-1'
 type = 'CosmosSdk'
-rpc_addr = 'https://stride-rpc.polkachu.com/'
-websocket_addr = 'wss://stride-rpc.polkachu.com/websocket'
-grpc_addr = 'https://stride-grpc.lavenderfive.com/'
-rpc_timeout = '10s'
+rpc_addr = 'https://stride.rpc.interchain.ivaldilabs.xyz'
+websocket_addr = 'wss://stride.rpc.interchain.ivaldilabs.xyz/websocket'
+grpc_addr = 'http://stride-grpc.polkachu.com:12290'
+rpc_timeout = '20s'
 account_prefix = 'stride'
 key_name = 'relayer'
 key_store_type = 'Test'
 store_prefix = 'ibc'
 default_gas = 100000
-max_gas = 40000000000000
-gas_multiplier = 1.1
+max_gas = 400000000000
+gas_multiplier = 1.9
 max_msg_num = 30
 max_tx_size = 180000
-clock_drift = '5s'
-max_block_time = '30s'
-memo_prefix = '$RELAYED_BY'
-sequential_batch_tx = true
+clock_drift = '15s'
+max_block_time = '10s'
+memo_prefix = 'Relayed by feriantogumulia#1421'
+sequential_batch_tx= true
 
 [chains.trust_threshold]
 numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 0.001
+price = 0.0025
 denom = 'ustrd'
 
 [chains.packet_filter]
@@ -298,15 +269,7 @@ policy = 'allow'
 list = [
     [
     'transfer',
-    'channel-0', # Cosmos
-],
-    [
-    'transfer',
-    'channel-5', # Osmosis
-],
-    [
-    'transfer',
-    'channel-54', # Planq
+    'channel-54',
 ],
 ]
 
