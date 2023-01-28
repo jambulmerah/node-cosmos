@@ -116,7 +116,7 @@ max_msg_num = 30
 max_tx_size = 180000
 clock_drift = '15s'
 max_block_time = '10s'
-memo_prefix = 'Relayed by feriantogumulia#1421'
+memo_prefix = '$RELAYED_BY'
 sequential_batch_tx= true
 trusting_period = '7days'
 
@@ -200,7 +200,7 @@ max_msg_num = 30
 max_tx_size = 180000
 clock_drift = '15s'
 max_block_time = '10s'
-memo_prefix = 'Relayed by feriantogumulia#1421'
+memo_prefix = '$RELAYED_BY'
 sequential_batch_tx= true
 address_type =  { derivation = 'ethermint', proto_type = { pk_type = '/ethermint.crypto.v1.ethsecp256k1.PubKey' } }
 trusting_period = '7days'
@@ -253,7 +253,7 @@ max_msg_num = 30
 max_tx_size = 180000
 clock_drift = '15s'
 max_block_time = '10s'
-memo_prefix = 'Relayed by feriantogumulia#1421'
+memo_prefix = '$RELAYED_BY'
 sequential_batch_tx= true
 
 [chains.trust_threshold]
